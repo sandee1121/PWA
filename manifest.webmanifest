@@ -1,0 +1,17 @@
+{
+  "name": "Karthikeya Designs Invoice Calculator",
+  "short_name": "Karthikeya Designs",
+  "description": "3D printing invoice and profit calculator.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f6f5ef",
+  "theme_color": "#19211c",
+  "icons": [
+    {
+      "src": "karthikeya-designs-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

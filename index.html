@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#19211c" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>Karthikeya Designs — Invoice Calculator</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="karthikeya-designs-logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=20260912-2" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header>
+        <div class="brand-mark"><img src="karthikeya-designs-logo.png" alt="Karthikeya Designs logo" /></div>
+        <div>
+          <p class="eyebrow">3D PRINTING</p>
+          <h1>Karthikeya Designs</h1>
+        </div>
+        <p class="tagline">A clear quote for every layer.</p>
+      </header>
+
+      <section class="hero">
+        <div>
+          <p class="eyebrow">QUOTE BUILDER</p>
+          <h2>Know what your print<br /><em>really costs.</em></h2>
+          <p class="intro">Enter your slicer estimates and production costs. Your quote updates instantly.</p>
+        </div>
+        <div class="filament-orb" aria-hidden="true"><span>3D</span></div>
+      </section>
+
+      <div class="workspace">
+        <form id="calculator" class="inputs" autocomplete="off">
+          <section>
+            <div class="section-heading"><span>00</span><h3>Customer</h3></div>
+            <label>Customer name<div class="input-unit"><input id="customerName" type="text" placeholder="Enter name" required /></div></label>
+            <label>Mobile number<div class="input-unit"><input id="customerContact" type="tel" inputmode="tel" placeholder="Enter mobile number" required /></div></label>
+            <label class="whatsapp-check"><input id="whatsappEnabled" type="checkbox" /><span>This number is on WhatsApp</span></label>
+            <label>Item name<div class="input-unit"><input id="itemName" type="text" placeholder="3D printed part" /></div></label>
+            <label>Quantity<div class="input-unit"><input id="quantity" type="number" min="1" step="1" value="1" inputmode="numeric" /><span>pcs</span></div></label>
+            <p class="invoice-preview">Next invoice no.<strong id="invoiceNumberPreview">KD-000000-000</strong></p>
+            <p class="customer-note">Bill number and date are created automatically when you print.</p>
+          </section>
+          <section>
+            <div class="section-heading"><span>01</span><h3>Material</h3></div>
+            <label>
+              Filament used
+              <div class="input-unit"><input id="filamentUsed" type="number" min="0" step="0.1" value="85" inputmode="decimal" /><span>g</span></div>
+            </label>
+            <label>
+              Filament spool price
+              <div class="input-unit prefix"><span>₹</span><input id="spoolPrice" type="number" min="0" step="0.01" value="1600" inputmode="decimal" /></div>
+            </label>
+            <label>
+              Spool weight
+              <div class="input-unit"><input id="spoolWeight" type="number" min="1" step="1" value="1000" inputmode="decimal" /><span>g</span></div>
+            </label>
+          </section>
+
+          <section>
+            <div class="section-heading"><span>02</span><h3>Production</h3></div>
+            <label>
+              Print time
+              <div class="dual-inputs"><input id="printHours" aria-label="Print hours" type="number" min="0" step="1" value="4" /><span>h</span><input id="printMinutes" aria-label="Print minutes" type="number" min="0" max="59" step="1" value="30" /><span>m</span></div>
+            </label>
+            <label>
+              Electricity rate
+              <div class="input-unit prefix"><span>₹</span><input id="electricityRate" type="number" min="0" step="0.01" value="8" /><span>/ kWh</span></div>
+            </label>
+            <label>
+              Printer power draw
+              <div class="input-unit"><input id="printerWatts" type="number" min="0" step="1" value="150" /><span>W</span></div>
+            </label>
+          </section>
+
+          <section>
+            <div class="section-heading"><span>03</span><h3>Pricing</h3></div>
+            <label>
+              Labor / finishing
+              <div class="input-unit prefix"><span>₹</span><input id="laborCost" type="number" min="0" step="0.01" value="100" /></div>
+            </label>
+            <label>
+              Overhead
+              <div class="input-unit prefix"><span>₹</span><input id="overheadCost" type="number" min="0" step="0.01" value="50" /></div>
+            </label>
+            <label>
+              Profit margin
+              <div class="input-unit"><input id="profitMargin" type="number" min="0" step="1" value="30" /><span>%</span></div>
+            </label>
+          </section>
+        </form>
+
+        <aside class="quote-card" aria-live="polite">
+          <p class="eyebrow">RECOMMENDED QUOTE</p>
+          <p class="quote-total"><span>₹</span><strong id="quoteTotal">0</strong></p>
+          <p class="quote-note">Includes your chosen <span id="marginLabel">30%</span> profit margin</p>
+          <div class="rule"></div>
+          <dl>
+            <div><dt>Material</dt><dd id="materialCost">₹0</dd></div>
+            <div><dt>Electricity</dt><dd id="electricityCost">₹0</dd></div>
+            <div><dt>Labor & overhead</dt><dd id="otherCost">₹0</dd></div>
+            <div class="subtotal"><dt>Production cost</dt><dd id="productionCost">₹0</dd></div>
+            <div class="profit"><dt>Profit</dt><dd id="profitCost">₹0</dd></div>
+          </dl>
+          <div class="actions">
+            <button type="button" class="primary-action" id="printBill">Print bill</button>
+            <button type="button" class="secondary-action" id="resetCalculator">Reset</button>
+          </div>
+          <button type="button" class="copy-button" id="copyQuote">Copy quote</button>
+          <button type="button" class="copy-button whatsapp-ready" id="sendLatestWhatsapp" hidden>Send latest invoice on WhatsApp</button>
+          <p id="copyStatus" class="copy-status"></p>
+        </aside>
+      </div>
+      <footer>Prices are estimates — adjust inputs to match your actual workshop costs.</footer>
+    </main>
+    <section id="printBillSheet" class="print-bill" aria-hidden="true">
+      <div class="print-brand"><span>▦</span> PRINTCOST <small>3D PRINTING</small></div>
+      <h1>3D Print Bill</h1>
+      <p class="print-meta">Bill generated: <span id="billDate"></span></p>
+      <table>
+        <thead><tr><th>Description</th><th>Details</th><th>Amount</th></tr></thead>
+        <tbody>
+          <tr><td>Filament</td><td id="billFilamentDetails"></td><td id="billMaterial"></td></tr>
+          <tr><td>Electricity</td><td id="billElectricityDetails"></td><td id="billElectricity"></td></tr>
+          <tr><td>Labor & finishing</td><td>Workshop service</td><td id="billLabor"></td></tr>
+          <tr><td>Overhead</td><td>Machine & workshop overhead</td><td id="billOverhead"></td></tr>
+          <tr class="print-subtotal"><td colspan="2">Production cost</td><td id="billProduction"></td></tr>
+          <tr><td colspan="2">Profit</td><td id="billProfit"></td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="2">TOTAL AMOUNT</td><td id="billTotal"></td></tr></tfoot>
+      </table>
+      <p class="print-thanks">Thank you for choosing PrintCost.</p>
+    </section>
+    <div id="confirmModal" class="confirm-modal" hidden role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <div class="confirm-card">
+        <p class="eyebrow">FINAL REVIEW</p>
+        <h2 id="confirmTitle">Check bill details</h2>
+        <p class="confirm-intro">Please confirm these details before opening the bill.</p>
+        <dl class="confirm-list">
+          <div><dt>Customer</dt><dd id="confirmCustomer"></dd></div>
+          <div><dt>Mobile</dt><dd id="confirmMobile"></dd></div>
+          <div><dt>Item</dt><dd id="confirmItem"></dd></div>
+          <div><dt>Rate</dt><dd id="confirmRate"></dd></div>
+          <div><dt>Quantity</dt><dd id="confirmQuantity"></dd></div>
+          <div class="confirm-total"><dt>Total amount</dt><dd id="confirmTotal"></dd></div>
+        </dl>
+        <div class="confirm-actions"><button type="button" id="cancelConfirm" class="modal-cancel">Edit details</button><button type="button" id="approveConfirm" class="modal-approve">Confirm & open bill</button></div>
+      </div>
+    </div>
+    <div id="whatsappModal" class="confirm-modal" hidden role="dialog" aria-modal="true" aria-labelledby="whatsappTitle">
+      <div class="confirm-card">
+        <p class="eyebrow">INTERNAL JOB LOG</p>
+        <h2 id="whatsappTitle">Review WhatsApp draft</h2>
+        <p class="confirm-intro">This draft goes to 7382473073 and includes the full job details, cost breakdown, and profit.</p>
+        <dl class="confirm-list">
+          <div><dt>Invoice</dt><dd id="whatsappInvoice"></dd></div>
+          <div><dt>Customer</dt><dd id="whatsappCustomer"></dd></div>
+          <div><dt>Amount</dt><dd id="whatsappAmount"></dd></div>
+          <div class="confirm-total"><dt>Profit included</dt><dd id="whatsappProfit"></dd></div>
+        </dl>
+        <div class="confirm-actions"><button type="button" id="cancelWhatsapp" class="modal-cancel">Cancel</button><button type="button" id="approveWhatsapp" class="modal-approve">Send to WhatsApp (draft)</button></div>
+      </div>
+    </div>
+    <script src="app.js?v=20260912-2"></script>
+    <script>
+      if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+    </script>
+  </body>
+</html>
